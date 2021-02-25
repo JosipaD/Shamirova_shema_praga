@@ -1,6 +1,6 @@
 # Student : Josipa Despotović
 # Diplomski rad : Metode podjele tajni
-# studeni 2020.godine
+# veljaca 2021.godine
 #
 # Implementacija Shamirove sheme podjele tajni u generiranju i rekonstrukciji lozinke
 
@@ -77,8 +77,10 @@ def generirajProsti_p(lozinka):
 # Odaberimo n različitih ne-nul elemenata iz Zp, u oznaci x_i
 def random_Xi(n,prost):
     lista = []
-    for i in range(0,n):
-        lista.append(random.randint(0,prost))
+    while (len(lista)!= n):
+        temp = random.randint(0,prost)
+        if temp not in lista:
+            lista.append(temp)
     return lista
 
 # Odaberimo t-1 elemenata iz Zp u oznaci a_i
@@ -272,50 +274,55 @@ def main():
         print("********************************************************")
         print("R E K O N S T R U K C I J A    L O Z I N K E")
         print("********************************************************")
+
+        # Potrebno unijeti dionice
+        t_dionica = []
+
+        # Ukoliko želimo nasumičan odabir dionica odkomentirati ovaj dio
+        ###################################################################
         '''
         # Nasumično odabrane dionice ( za provjeru izračuna ):
         # Nasumično odaberimo t dionica od njih n, koje su nam potrebne za rekonstrukciju.
         
-        dionice_nasumicno = odaberi_Dionice(dionice,t,n)
+        t_dionica = odaberi_Dionice(dionice,t,n)
         print("Nasumično su odabrane sljedeće dionice:")
-        for i in range(0,len(dionice_nasumicno)):
-            print(i+1,". ", dionice_nasumicno[i])
-        '''
-
-        
-        print("")
-        print("Morate unijeti ",t," od mogućih ",n," dionica kako bi otkrili Vašu lozinku.")
-        print("-----------------------------------------------------------------------")
-        print("")
-        
-        
-        # Korisnik unosi t dionica
-        dionica_xi = -1
-        dionica_yi = -1
-        t_dionica = []
-        
-        for i in range(0,t):
-            provjera = False
-            while(provjera != True):
-                xi = int(input(f"Unesite x{i+1}: "))
-                yi = int(input(f"Unesite y{i+1}: "))
-
-                if([xi,yi] not in dionice):
-                    provjera = False
-                    print("Nepostojeća dionica !")
-                elif([xi,yi] in t_dionica):
-                    provjera = False
-                    print("Već ste unijeli tu dionicu.")
-                else:
-                    provjera = True
-                    t_dionica.append([xi,yi])
-        
-        print("")
-        print("Odabrane su sljedeće dionice za rekonstrukciju tajne")
-        print("-----------------------------------------------------------------------")
         for i in range(0,len(t_dionica)):
-            print(i+1,".  ",t_dionica[i])
-        print("")                
+            print(i+1,". ", t_dionica[i])
+        '''
+        ###################################################################
+        
+        
+        if (len(t_dionica) == 0):
+            print("")
+            print("Morate unijeti ",t," od mogućih ",n," dionica kako bi otkrili Vašu lozinku.")
+            print("-----------------------------------------------------------------------")
+            print("")
+            # Korisnik unosi t dionica
+            dionica_xi = -1
+            dionica_yi = -1
+            
+            for i in range(0,t):
+                provjera = False
+                while(provjera != True):
+                    xi = int(input(f"Unesite x{i+1}: "))
+                    yi = int(input(f"Unesite y{i+1}: "))
+
+                    if([xi,yi] not in dionice):
+                        provjera = False
+                        print("Nepostojeća dionica !")
+                    elif([xi,yi] in t_dionica):
+                        provjera = False
+                        print("Već ste unijeli tu dionicu.")
+                    else:
+                        provjera = True
+                        t_dionica.append([xi,yi])
+            
+            print("")
+            print("Odabrane su sljedeće dionice za rekonstrukciju tajne")
+            print("-----------------------------------------------------------------------")
+            for i in range(0,len(t_dionica)):
+                print(i+1,".  ",t_dionica[i])
+            print("")                
         
 
         # Za rekonstrukciju koristimo Lagrangeov interp.formulu
@@ -342,4 +349,3 @@ def main():
         
 if __name__ == "__main__":
     main()
-    
